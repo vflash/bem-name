@@ -30,7 +30,7 @@ function bem(blockName, sepMod) {
         var css = elem;
 
         var i = arguments.length, x;
-        while(--i) {
+        while(--i > 0) {
             if (x = arguments[i]) {
                 if (typeof x === 'object') {
                     css += isArray(x) ? arr(x) : obj(elem, x);
