@@ -20,8 +20,9 @@ var isArray = Array.isArray;
 exports = bem;
 
 
-function bem(blockName, sepMod) {
-    var sepMod = sepMod === '_' ? '_' : (sepMod === '~~' ? '~~' : '--');
+function bem(blockName, sepType) {
+    var sepMod = sepType === '_' ? '_' : (sepType === '~' ? '~~' : '--');
+    var sepVar = sepType === '_' ? '_' : '-';
     var block = '' + blockName;
     return bemFn;
 
@@ -54,7 +55,7 @@ function bem(blockName, sepMod) {
             if (v === true) {
                 css += ' ' + elem + sepMod + name;
             } else if (v || v === 0) {
-                css += ' ' + elem + sepMod + name + '-' + v;
+                css += ' ' + elem + sepMod + name + sepVar + v;
             };
         };
 
@@ -67,7 +68,7 @@ function bem(blockName, sepMod) {
         if (v === true) {
             return ' ' + a[0];
         } else if (v || v === 0) {
-            return ' ' + a[0] + '-' + v;
+            return ' ' + a[0] + sepVar + v;
         };
 
         return '';
