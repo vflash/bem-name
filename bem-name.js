@@ -17,7 +17,7 @@
 */
 
 var isArray = Array.isArray;
-exports = bem;
+module.exports = bem;
 
 
 function bem(blockName, sepType) {
@@ -27,8 +27,28 @@ function bem(blockName, sepType) {
     return bemFn;
 
     function bemFn(elemName) {
-        var elem = elemName ? block + '__' + elemName : block;
-        var css = elem;
+        if (elemName) {
+            if (elemName.charCodeAt(0) === 43) {
+                var j = findIndexPoint(elemName);
+                if (j !== -1) {
+                    var elem = block + '__' + elemName.substr(j + 1);
+                    var css = elemName.substr(0, j + 1) + elem;
+                } else {
+                    var elem = block;
+                    var css = elemName + '.' + elem;
+                };
+            } else {
+                var elem = block + '__' + elemName;
+                var css = elem;
+            };
+        } else {
+            var elem = block;
+            var css = elem;
+        };
+
+
+        //var elem = elemName ? block + '__' + elemName : block;
+        //var css = elem;
 
         var i = arguments.length, x;
         while(--i > 0) {
@@ -73,7 +93,18 @@ function bem(blockName, sepType) {
 
         return '';
     };
+};
 
+function findIndexPoint(s) {
+    var length = +s.length;
 
+    for(var i = 2; i < length; i++) {
+        if (s.charCodeAt(i) !== 46) { // '.'
+            continue;
+        };
+        return i;
+    };
+
+    return -1;
 };
 
