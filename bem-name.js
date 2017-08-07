@@ -16,29 +16,43 @@
     // x === 'myButton__icon myButton__icon--type-red myButton__icon--show -size-14 -open x-glob-xxxx myForm__button'
 */
 
+var SEP_ELEM = '__';
+var SEP_MOD = '--';
+var SEP_VAR = '-';
+
 var isArray = Array.isArray;
 module.exports = bem;
 
 
-function bem(blockName, sepType) {
-    var sepMod = sepType === '_' ? '_' : (sepType === '~' ? '~~' : '--');
-    var sepVar = sepType === '_' ? '_' : '-';
+function bem(blockName) {
+    var sepElem = SEP_ELEM;
+    var sepMod = SEP_MOD;
+    var sepVar = SEP_VAR;
     var block = '' + blockName;
-    return bemFn;
 
-    function bemFn(elemName) {
+    bemFun.setup = setup;
+    return bemFun;
+
+    function setup(_var, _mod, _elem) {
+        sepElem = _elem || SEP_ELEM;
+        sepMod = _mod || SEP_MOD;
+        sepVar = _var || SEP_VAR;
+        return bemFun;
+    };
+
+    function bemFun(elemName) {
         if (elemName) {
             if (elemName.charCodeAt(0) === 43) {
                 var j = findIndexPoint(elemName);
                 if (j !== -1) {
-                    var elem = block + '__' + elemName.substr(j + 1);
+                    var elem = block + sepElem + elemName.substr(j + 1);
                     var css = elemName.substr(0, j + 1) + elem;
                 } else {
                     var elem = block;
                     var css = elemName + '.' + elem;
                 };
             } else {
-                var elem = block + '__' + elemName;
+                var elem = block + sepElem + elemName;
                 var css = elem;
             };
         } else {
@@ -47,20 +61,19 @@ function bem(blockName, sepType) {
         };
 
 
-        //var elem = elemName ? block + '__' + elemName : block;
-        //var css = elem;
+        for (var i = 1, l = arguments.length; i < l; i++) {
+            var x = arguments[i]
+            if (!x) {
+                continue;
+            };
 
-        var i = arguments.length, x;
-        while(--i > 0) {
-            if (x = arguments[i]) {
-                if (typeof x === 'object') {
-                    css += isArray(x) ? arr(x) : obj(elem, x);
-                    continue;
-                };
+            if (typeof x === 'object') {
+                css += isArray(x) ? arr(elem, x) : obj(elem, x);
+                continue;
+            };
 
-                if (typeof x === 'string') {
-                    css += ' ' + x;
-                };
+            if (typeof x === 'string') {
+                css += ' ' + x;
             };
         };
 
@@ -82,16 +95,25 @@ function bem(blockName, sepType) {
         return css;
     };
 
-    function arr(a) {
-        var v = a[1];
+    function arr(elem, a) {
+        var css = '';
+        for (var i = 0, l = a.length; i < l; i++) {
+            var x = a[i];
+            if (!x) {
+                continue;
+            };
 
-        if (v === true) {
-            return ' ' + a[0];
-        } else if (v || v === 0) {
-            return ' ' + a[0] + sepVar + v;
+            if (typeof x === 'object') {
+                css += isArray(x) ? arr(elem, x) : obj(elem, x);
+                continue;
+            };
+
+            if (typeof x === 'string') {
+                css += ' ' + x;
+            };
         };
 
-        return '';
+        return css;
     };
 };
 

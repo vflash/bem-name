@@ -10,15 +10,15 @@ var b = bem('myButton');
 
 var x = b(); // myButton
 var x = b('icon'); // myButton__icon
-var x = b('icon', mix
-    , 'x-glob-xxxx'
-    , ['-open', true]
-    , ['-size', 14]
+var x = b('icon'
     , {
         type: 'red',
         show: true
     }
+    , ['-open', {size: 14}]
+    , 'x-glob-xxxx'
+    , mix
 );
-// 'myButton__icon myButton__icon--type-red myButton__icon--show -size-14 -open x-glob-xxxx myForm__button'
+// 'myButton__icon myButton__icon--type-red myButton__icon--show -open myButton__icon--size-14 x-glob-xxxx myForm__button'
 ```
 

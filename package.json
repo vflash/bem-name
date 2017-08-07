@@ -1,7 +1,10 @@
 {
-    "version": "0.1.4",
+    "version": "0.2.0",
     "name": "bem-name",
     "description": "css class-name generator ",
+    "scripts": {
+        "test": "mocha"
+    },
     "keywords": [
         "className",
         "bem"
@@ -16,7 +19,6 @@
         "email": "flash.vkv@gmail.com",
         "url": "http://vflash.ru"
     },
-
     "files": [
         "LICENSE",
         "README.md",
@@ -25,5 +27,8 @@
     "repository": {
         "type": "git",
         "url": "git://github.com/vflash/bem-name.git"
+    },
+    "devDependencies": {
+        "mocha": "^3.5.0"
     }
 }
