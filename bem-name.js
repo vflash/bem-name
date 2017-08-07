@@ -1,20 +1,4 @@
 'use strict';
-/*
-    var mix = 'myForm__button';
-    var b = bem('myButton');
-
-    var x = b('icon', mix
-        , 'x-glob-xxxx'
-        , ['-open', true]
-        , ['-size', 14]
-        , {
-            type: 'red',
-            show: true
-        }
-    );
-
-    // x === 'myButton__icon myButton__icon--type-red myButton__icon--show -size-14 -open x-glob-xxxx myForm__button'
-*/
 
 var SEP_ELEM = '__';
 var SEP_MOD = '--';
