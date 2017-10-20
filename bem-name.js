@@ -25,62 +25,78 @@ function bem(blockName) {
     };
 
     function bemFun(elemName) {
+        var elem;
+        var css;
+
         if (elemName) {
             if (elemName.charCodeAt(0) === 43) {
-                var j = findIndexPoint(elemName);
+                var j = elemName.indexOf('.');
+
                 if (j !== -1) {
-                    var elem = block + sepElem + elemName.substr(j + 1);
-                    var css = elemName.substr(0, j + 1) + elem;
+                    elem = block + sepElem + elemName.substr(j + 1);
+                    css = elemName.substr(0, j + 1) + elem;
                 } else {
-                    var elem = block;
-                    var css = elemName + '.' + elem;
+                    elem = block;
+                    css = elemName + '.' + elem;
                 };
             } else {
-                var elem = block + sepElem + elemName;
-                var css = elem;
+                elem = block + sepElem + elemName;
+                css = elem;
             };
         } else {
-            var elem = block;
-            var css = elem;
+            elem = block;
+            css = elem;
         };
 
+        var l = arguments.length;
+        if (l < 2) {
+            return css;
+        };
 
-        for (var i = 1, l = arguments.length; i < l; i++) {
-            var x = arguments[i]
-            if (!x) {
+        var clssList = [css];
+        var elem_ = elem + sepMod;
+        var i = 1;
+
+        for (; i < l; i++) {
+            var arg = arguments[i]
+            if (!arg) {
                 continue;
             };
 
-            if (typeof x === 'object') {
-                css += isArray(x) ? arr(elem, x) : obj(elem, x);
+            if (typeof arg === 'string') {
+                clssList.push(arg);
                 continue;
             };
 
-            if (typeof x === 'string') {
-                css += ' ' + x;
+            if (typeof arg === 'object') {
+                if (isArray(arg)) {
+                    arr(clssList, elem_, arg);
+                    continue;
+                };
+
+                obj(clssList, elem_, arg);
+                continue;
             };
         };
 
-        return css;
+        return clssList.join(' ');
     };
 
-    function obj(elem, props) {
-        var css = '';
-
+    function obj(clssList, elem_, props) {
         for (var name in props) {
-            var v = props[name];
-            if (v === true) {
-                css += ' ' + elem + sepMod + name;
-            } else if (v || v === 0) {
-                css += ' ' + elem + sepMod + name + sepVar + v;
+            var value = props[name];
+            if (value === true) {
+                clssList.push(elem_ + name)
+                continue;
+            };
+
+            if (value || value === 0) {
+                clssList.push(elem_ + name + sepVar + value);
             };
         };
-
-        return css;
     };
 
-    function arr(elem, a) {
-        var css = '';
+    function arr(clssList, elem_, a) {
         for (var i = 0, l = a.length; i < l; i++) {
             var x = a[i];
             if (!x) {
@@ -88,29 +104,18 @@ function bem(blockName) {
             };
 
             if (typeof x === 'object') {
-                css += isArray(x) ? arr(elem, x) : obj(elem, x);
+                if (isArray(x)) {
+                    arr(clssList, elem_, x);
+                } else {
+                    obj(clssList, elem_, x);
+                };
                 continue;
             };
 
             if (typeof x === 'string') {
-                css += ' ' + x;
+                clssList.push(x);
             };
         };
-
-        return css;
     };
-};
-
-function findIndexPoint(s) {
-    var length = +s.length;
-
-    for(var i = 2; i < length; i++) {
-        if (s.charCodeAt(i) !== 46) { // '.'
-            continue;
-        };
-        return i;
-    };
-
-    return -1;
 };
 

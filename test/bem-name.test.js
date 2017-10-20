@@ -67,16 +67,10 @@ describe('test-01', function() {
 });
 
 describe('test-speed', function() {
-    it('speed: ' + speed(), function() {
-        assert.equal(1, 1);
-    });
-});
-
-function speed() {
     var b = bem('MyBlock');
-    var mix = 'kjdfgkj dskfgs kldf sldjkhgsdg sdlkj';
 
-    function test() {
+    function testA(i) {
+        var mix = 'kjdfgkj dskfgs kldf sldjkhgsdg sdlkj';
         return b('icon'
             , 'x-glob-xxxx'
             , {type: 'red', show: true}
@@ -85,6 +79,24 @@ function speed() {
             , mix
         );
     };
+    function testB(i) {
+        var mix = 'kjdfgkj dskfgs kldf sldjkhgsdg sdlkj';
+        return b('icon', mix);
+    };
+    function testC(i) {
+        return b('icon');
+    };
+    function testD(i) {
+        return b();
+    };
+
+    it('speedA: ' + speed(testA), function() {assert.equal(1, 1)});
+    it('speedB: ' + speed(testB), function() {assert.equal(1, 1)});
+    it('speedC: ' + speed(testC), function() {assert.equal(1, 1)});
+    it('speedD: ' + speed(testD), function() {assert.equal(1, 1)});
+});
+
+function speed(test) {
 
     for(var i = 100; i--; ) {
         test(i);
