@@ -1,6 +1,6 @@
 bem-name
 ==================================================
-простой и быстрый генератор класса(html) в стиле BEM
+a simple and quick generator of the class(html) in the style of BEM
 
 Install
 ---------------------------------------------------
@@ -8,7 +8,7 @@ Install
 $ npm install bem-name
 ```
 
-Пример использования
+Example of use
 --------------------------------------
 ```js
 var mix = 'myForm__button';
